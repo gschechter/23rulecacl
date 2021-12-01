@@ -2,6 +2,8 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -15,16 +17,19 @@
 </head>
 
 <body>
-    <div class="form-group">
-        <label for="input">Input:</label>
-        <input type="text" class="form-control" id="input">
+    <div class="container">
+        <div class="form-group">
+            <label for="input">Input:</label>
+            <input type="text" class="form-control" id="input">
+
+        </div>
+
+        <button class="btn btn-default" id="button" type="submit">Get Possible Combinations</button>
+
+
+        <div id="output"></div>
 
     </div>
-
-    <button class="btn btn-default" id="button" type="submit">Get Possible Combinations</button>
-
-
-    <div id="container"></div>
     <script>
         $(document).ready(function() {
 
@@ -57,7 +62,7 @@
                         return parseInt(a) + parseInt(b);
                     }, 0) + '</br>';
                 });
-                $("#container").html(finalText);
+                $("#output").html(finalText);
             })
 
             function subset(input) {
