@@ -29,12 +29,12 @@
           
         const handicaps = urlParams.get('handicaps');
           
-        if((typeof)handicaps !== "undefined"){
-          $("#input").text(handicaps);
-          $("#button").click();
+        if(handicaps == "undefined"){
+           $("#input").text("8,6,5,4,3,3,2");   
         }
        else{
-             $("#input").text("8,6,5,4,3,3,2");     
+           $("#input").text(handicaps);
+          $("#button").click();              
         }
 
         $("#button").click(function() {
