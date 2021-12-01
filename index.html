@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+    <head>
+      <meta charset="utf-8">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+      <style>
+      body {background-color:lightgray}
+      </style>
+    </head>
+    <body>
+      <div id="container"></div>
+      <button type="button" id="button">Click Me To Calculate combination!</button>
+      <script>
+      $(document).ready(function() {
+
+        var target = 15;
+        var array = [3,9,8,4,5,7,10];
+        var tmpArray = [];
+        var finalArray = [];
+
+        $("#button").click(function() {
+          sum_up_recursive(array, target, tmpArray);
+          console.log(finalArray.toString());
+          var finalText = '';
+          finalArray.forEach(function(entry) {
+            finalText = finalText + entry + '</br>';
+          });
+          $("#container").html(finalText);
+        })
+
+        function sum_up_recursive(numbers, number, partialArray) {
+
+          var s=0;
+          partialArray.forEach(function(entry) {
+            s=s+entry;
+          });
+          if (s == target) {
+            //finalArray.push(partialArray);
+            var res = partialArray.join();  
+            res=res.replace(/,/g , '+');
+            res= res+"="+s;
+             console.log(res);
+             finalArray.push(partialArray);
+            //$("#container").text(res);
+          }
+          if (s >= target) {
+            return;
+          }
+          for (var i=0; i<numbers.length; i++) {
+            n = numbers[i];
+            //var remaining = copyArray(cardArray, i+1, cardArray.length-1);
+            var remaining = [];
+            var remaining = numbers.slice(i+1);
+            var partical_arr = partialArray.slice();       
+            partical_arr.push(n);
+            sum_up_recursive(remaining, target, partical_arr);
+          }
+        }
+
+      });
+
+      </script>
+
+    </body>
+    </html>
