@@ -1,86 +1,93 @@
 <!DOCTYPE html>
 
-    <head>
-      <meta charset="utf-8">
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
-      <style>
-      body {background-color:lightgray}
-      </style>
-    </head>
-    <body>
-      <div id="container"></div>
-        <input id="input" type="text"/>
-      <button type="button" id="button">Click Me To Calculate combination!</button>
-      <script>
-      $(document).ready(function() {
-
-        var target = 23;
-        var array = [];
-        var tmpArray = [];
-        var finalArray = [];
-          
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-          
-        const handicaps = urlParams.get('handicaps');
-          
-        if(handicaps === undefined){
-           $("#input").val("8,6,5,4,3,3,2");   
+    <style>
+        body {
+            background-color: lightgray
         }
-       else{
-           $("#input").val(handicaps);
-          $("#button").click();              
-        }
+    </style>
+</head>
 
-        $("#button").click(function() {
-            
-          array = $("#input").val().split(",");
-          sum_up_recursive(array, target, tmpArray);
-          console.log(finalArray.toString());
-          var finalText = '';
-          finalArray.forEach(function(entry) {
-            finalText = finalText + entry + '</br>';
-          });
-          $("#container").html(finalText);
-        })
+<body>
+    <label>Input:</label><input id="input" type="text" /><br/>
+    <button type="button" id="button">Get Matches</button>
 
-        function sum_up_recursive(numbers, number, partialArray) {
+    <div id="container"></div>
+    <script>
+        $(document).ready(function() {
 
-          var s=0;
-          partialArray.forEach(function(entry) {
-            s=s+entry;
-          });
-          if (s == target) {
-            //finalArray.push(partialArray);
-            var res = partialArray.join();  
-            res=res.replace(/,/g , '+');
-            res= res+"="+s;
-             console.log(res);
-             finalArray.push(partialArray);
-            //$("#container").text(res);
-          }
-          if (s >= target) {
-            return;
-          }
-          for (var i=0; i<numbers.length; i++) {
-            n = numbers[i];
-            //var remaining = copyArray(cardArray, i+1, cardArray.length-1);
-            var remaining = [];
-            var remaining = numbers.slice(i+1);
-            var partical_arr = partialArray.slice();       
-            partical_arr.push(n);
-            sum_up_recursive(remaining, target, partical_arr);
-          }
-        }
+            var target = 23;
+            var array = [];
+            var tmpArray = [];
+            var finalArray = [];
+            var sums = [];
+            var sets = [];
 
-      });
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
 
-      </script>
+            const handicaps = urlParams.get('handicaps');
 
-    </body>
-    </html>
+            if (handicaps === undefined || handicaps === null) {
+                $("#input").val("8,6,5,4,3,3,2");
+            } else {
+                $("#input").val(handicaps);
+                $("#button").click();
+            }
+
+            $("#button").click(function() {
+
+                array = $("#input").val().split(",");
+                finalArray = subset(array);
+                var finalText = '';
+                finalArray.forEach(function(entry) {
+                    finalText = finalText + entry + '=' + entry.reduce(function(a, b) {
+                        return parseInt(a) + parseInt(b);
+                    }, 0) + '</br>';
+                });
+                $("#container").html(finalText);
+            })
+
+            function subset(input) {
+
+                function SubSets(read, queued) {
+                    if (read.length == 5 || (read.length <= 5 && queued.length == 0)) {
+                        if (read.length == 5) {
+                            var total = read.reduce(function(a, b) {
+                                return parseInt(a) + parseInt(b);
+                            }, 0);
+                            if (total <= target) {
+
+                                let set = read.slice().sort();
+                                let isEqual = false;
+                                sets.forEach(element => {
+                                    isEqual = (JSON.stringify(element.sort()) === JSON.stringify(set.sort()));
+                                });
+
+                                if (!isEqual) {
+                                    sets.push(set);
+                                }
+                            }
+                        }
+                    } else {
+                        SubSets(read.concat(queued[0]), queued.slice(1));
+                        SubSets(read, queued.slice(1));
+                    }
+                }
+                SubSets([], input);
+                //console.log(sums.sort(function(a,b){return a-b;}));
+                //log sums without sort to have them line up to sets or modify previous structure
+                return sets;
+            }
+        });
+    </script>
+
+</body>
+
+</html>
