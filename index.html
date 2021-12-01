@@ -14,16 +14,32 @@
     </head>
     <body>
       <div id="container"></div>
+        <input id="input" type="text"/>
       <button type="button" id="button">Click Me To Calculate combination!</button>
       <script>
       $(document).ready(function() {
 
-        var target = 15;
-        var array = [3,9,8,4,5,7,10];
+        var target = 23;
+        var array = [];
         var tmpArray = [];
         var finalArray = [];
+          
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+          
+        const handicaps = urlParams.get('handicaps');
+          
+        if((typeof)handicaps !== "undefined"){
+          $("#input").text(handicaps);
+          $("#button").click();
+        }
+       else{
+             $("#input").text("8,6,5,4,3,3,2");     
+        }
 
         $("#button").click(function() {
+            
+          array = $("#input").val().split(",");
           sum_up_recursive(array, target, tmpArray);
           console.log(finalArray.toString());
           var finalText = '';
