@@ -45,12 +45,7 @@
 
             const handicaps = urlParams.get('handicaps');
 
-            if (handicaps === undefined || handicaps === null) {
-                $("#input").val("8,6,5,4,3,3,2");
-            } else {
-                $("#input").val(handicaps);
-                $("#button").click();
-            }
+            
 
             $("#button").click(function() {
 
@@ -95,6 +90,13 @@
                 //console.log(sums.sort(function(a,b){return a-b;}));
                 //log sums without sort to have them line up to sets or modify previous structure
                 return sets;
+            }
+            
+            if (handicaps === undefined || handicaps === null) {
+                $("#input").val("8,6,5,4,3,3,2");
+            } else {
+                $("#input").val(handicaps);
+                $("#button").click();
             }
         });
     </script>
